@@ -43,13 +43,6 @@ PUT    /api/templates/:id       # 更新模板
 DELETE /api/templates/:id       # 刪除模板
 POST   /api/templates/:id/preview # 預覽模板
 
-# Flex Message 相關
-POST   /api/flex-messages       # 儲存 Flex Message
-GET    /api/flex-messages       # 取得 Flex Message 列表
-GET    /api/flex-messages/:id   # 取得 Flex Message 詳情
-PUT    /api/flex-messages/:id   # 更新 Flex Message
-DELETE /api/flex-messages/:id   # 刪除 Flex Message
-
 # 資料查詢（D1）
 POST   /api/query               # 執行資料查詢
 GET    /api/tables              # 取得資料表列表
@@ -90,7 +83,7 @@ linebot/
 │   │   ├── components/        # Vue 元件
 │   │   │   ├── broadcast/    # 推播相關元件
 │   │   │   ├── template/     # 模板相關元件
-│   │   │   ├── flex-editor/  # Flex Message 編輯器
+│   │   │   ├── query/        # 查詢建構器元件
 │   │   │   └── common/       # 共用元件
 │   │   ├── pages/            # 頁面路由
 │   │   ├── layouts/          # 佈局

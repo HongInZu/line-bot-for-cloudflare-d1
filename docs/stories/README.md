@@ -15,15 +15,14 @@ Each story should include:
 ### 核心功能
 1. [LINE 推播系統](01-line-push-notification.md) - 建立 LINE 推播核心功能
 2. [模板語法與 Cloudflare D1 整合](02-template-syntax-d1.md) - 實作動態模板系統
-3. [LINE Flex Message 編輯器](03-flex-message-editor.md) - 視覺化訊息設計工具
-4. [前後端分離架構](04-frontend-backend-separation.md) - 系統架構設計與實作（Vue 3 + Nuxt.js 3）
+3. [前後端分離架構](04-frontend-backend-separation.md) - 系統架構設計與實作（Vue 3 + Nuxt.js 3）
 
 ### 系統功能
-5. [使用者認證與授權](05-authentication-authorization.md) - 登入系統與權限控制
-6. [儀表板與數據分析](06-dashboard-analytics.md) - 統計數據與視覺化圖表
-7. [收件人管理系統](07-recipient-management.md) - 訂閱者管理、群組、標籤
-8. [排程推播系統](08-scheduled-broadcasts.md) - 預約推播與重複排程
-9. [Cloudflare D1 查詢建構器](09-d1-query-builder.md) - 視覺化資料庫查詢工具
+4. [使用者認證與授權](05-authentication-authorization.md) - 登入系統與權限控制
+5. [儀表板與數據分析](06-dashboard-analytics.md) - 統計數據與視覺化圖表
+6. [收件人管理系統](07-recipient-management.md) - 訂閱者管理、群組、標籤
+7. [排程推播系統](08-scheduled-broadcasts.md) - 預約推播與重複排程
+8. [Cloudflare D1 查詢建構器](09-d1-query-builder.md) - 視覺化資料庫查詢工具
 
 ## 開發階段規劃
 
@@ -39,19 +38,18 @@ Each story should include:
 3. **Story 01** - LINE 推播系統
 4. **Story 07** - 收件人管理系統
 
-### 第三階段：進階功能（預估 8-10 天）
+### 第三階段：進階功能（預估 6-7 天）
 5. **Story 09** - D1 查詢建構器
 6. **Story 02** - 模板語法與 D1 整合
-7. **Story 03** - Flex Message 編輯器
 
 ### 第四階段：擴展功能（預估 6-8 天）
-8. **Story 08** - 排程推播系統
-9. **Story 06** - 儀表板與數據分析
+7. **Story 08** - 排程推播系統
+8. **Story 06** - 儀表板與數據分析
 
 ## 總預估工時
-- **總計**: 約 22-29 天
+- **總計**: 約 20-26 天
 - **建議團隊規模**: 2-3 人
-- **預計完成時間**: 1.5-2 個月（含測試與調整）
+- **預計完成時間**: 1-1.5 個月（含測試與調整）
 
 ## 技術棧總覽
 
