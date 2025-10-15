@@ -15,7 +15,7 @@ Each story should include:
 ### 核心功能
 1. [LINE 推播系統](01-line-push-notification.md) - 建立 LINE 推播核心功能
 2. [模板引擎與動態資料渲染](02-template-syntax-d1.md) - 後端模板引擎實作
-3. [訊息預覽與變數綁定](03-message-preview-variable-binding.md) - JSON 編輯器與即時預覽
+3. [訊息模板配置與預覽](03-message-preview-variable-binding.md) - JSON 輸入、變數綁定與即時預覽
 4. [前後端分離架構](04-frontend-backend-separation.md) - 系統架構設計與實作（Vue 3 + Nuxt.js 3）
 
 ### 系統功能

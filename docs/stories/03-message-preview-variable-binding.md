@@ -1,10 +1,12 @@
-# Story 03: 訊息預覽與變數綁定系統
+# Story 03: 訊息模板配置與預覽系統
 
 ## 描述
-建立一個訊息編輯與預覽系統，使用者可以貼上 LINE 訊息的 JSON（包含 Flex Message），系統會自動解析變數，讓使用者設定資料來源（手動輸入或 SQL 查詢），並即時預覽實際推播的樣子。
+建立訊息模板配置介面，使用者可以貼上已設計好的 LINE 訊息 JSON（包含 Flex Message），系統自動解析變數，讓使用者設定資料來源（手動輸入或 SQL 查詢），並即時預覽填入資料後的訊息外觀。
+
+**重要：本系統不提供視覺化訊息設計功能，使用者需先在 LINE Flex Message Simulator 或其他工具設計訊息外觀，然後將 JSON 貼入本系統進行變數配置。**
 
 ## 使用者故事
-作為內容編輯者，我希望能夠貼上 LINE 訊息的 JSON，系統自動識別其中的變數，讓我設定資料來源，並即時預覽填入資料後的訊息外觀，以便快速建立動態推播內容。
+作為內容編輯者，我希望能夠將已設計好的 LINE 訊息 JSON 貼入系統，系統自動識別其中的變數占位符，讓我設定資料來源，並即時預覽填入真實資料後的訊息效果，以便快速建立可重複使用的動態推播模板。
 
 ## 核心功能流程
 
@@ -56,13 +58,14 @@
 
 ## 驗收標準
 
-### JSON 編輯器
-- [ ] 提供 JSON 輸入區域（語法高亮）
-- [ ] JSON 格式驗證
-- [ ] 支援 Flex Message 和純文字訊息
+### JSON 輸入區
+- [ ] 提供 JSON 輸入文字區域（語法高亮）
+- [ ] JSON 格式驗證與錯誤提示
+- [ ] 支援 Flex Message 和純文字訊息格式
 - [ ] JSON 格式化/壓縮功能
-- [ ] 範本庫（常用 Flex Message 範本）
-- [ ] 從 LINE Flex Message Simulator 匯入
+- [ ] 範本庫（儲存常用的訊息 JSON）
+- [ ] 從剪貼簿快速貼上
+- [ ] 顯示字元數/行數統計
 
 ### 變數解析
 - [ ] 自動偵測變數語法（`{{variable}}`, `{{object.property}}`）
@@ -132,12 +135,12 @@
 ### 三欄式佈局
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│  📝 訊息模板編輯                                              │
+│  📝 訊息模板配置                                              │
 ├──────────────────┬────────────────┬─────────────────────────┤
 │                  │                │                         │
-│  JSON 編輯器      │  變數設定       │   即時預覽              │
+│  JSON 輸入區      │  變數設定       │   訊息預覽              │
 │                  │                │                         │
-│  [JSON 輸入區]    │  變數列表：     │   [LINE 聊天室模擬]     │
+│  [文字輸入框]     │  變數列表：     │   [LINE 聊天室模擬]     │
 │                  │                │                         │
 │  - 語法高亮       │  user.name     │   [Flex Message 渲染]   │
 │  - 自動完成       │  └ 資料來源: 手動│                         │
@@ -243,23 +246,26 @@ interface PreviewResponse {
 
 ## Nuxt.js 頁面結構
 
-### 訊息模板編輯頁面
+### 訊息模板配置頁面
 ```vue
-<!-- pages/templates/editor.vue -->
+<!-- pages/templates/configure.vue -->
 <template>
-  <div class="template-editor">
-    <div class="editor-header">
+  <div class="template-configurator">
+    <div class="header">
       <UInput v-model="template.name" placeholder="模板名稱" />
       <UButton @click="saveTemplate">儲存模板</UButton>
     </div>
 
-    <div class="editor-layout">
-      <!-- 左側：JSON 編輯器 -->
-      <section class="json-editor-panel">
+    <div class="three-column-layout">
+      <!-- 左側：JSON 輸入區 -->
+      <section class="json-input-panel">
         <h3>訊息 JSON</h3>
-        <JsonEditor
-          v-model="template.messageJson"
-          @change="parseVariables"
+        <UTextarea
+          v-model="jsonInput"
+          :rows="30"
+          placeholder="貼上 LINE 訊息 JSON..."
+          class="font-mono"
+          @input="parseVariables"
         />
 
         <div class="actions">
@@ -442,11 +448,11 @@ async function testBroadcast() {
 
 ## 核心元件
 
-### JSON 編輯器
+### JSON 輸入區（選項 1: 使用 CodeMirror）
 ```vue
-<!-- components/JsonEditor.vue -->
+<!-- components/JsonInput.vue -->
 <template>
-  <div class="json-editor">
+  <div class="json-input">
     <codemirror
       v-model="code"
       :extensions="extensions"
@@ -461,6 +467,39 @@ import { json } from '@codemirror/lang-json'
 import { oneDark } from '@codemirror/theme-one-dark'
 
 const extensions = [json(), oneDark]
+</script>
+```
+
+### JSON 輸入區（選項 2: 使用原生 textarea）
+```vue
+<!-- components/JsonInput.vue -->
+<template>
+  <div class="json-input">
+    <UTextarea
+      v-model="jsonText"
+      :rows="30"
+      placeholder="貼上 JSON..."
+      class="font-mono text-sm"
+      @input="handleInput"
+    />
+    <div v-if="error" class="error-message">
+      {{ error }}
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+const jsonText = ref('')
+const error = ref('')
+
+function handleInput() {
+  try {
+    JSON.parse(jsonText.value)
+    error.value = ''
+  } catch (e) {
+    error.value = '無效的 JSON 格式'
+  }
+}
 </script>
 ```
 
